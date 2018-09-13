@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+                  <kml xmlns="http://earth.google.com/kml/2.2">
+                  <Document><name>Posicion de los vehículos</name>
+                       <Style id="finTrayecto">
+                       <IconStyle>
+                       <Icon>
+                       <href>http://maps.google.com/mapfiles/kml/pal3/icon52.png</href>
+                       </Icon>
+                       </IconStyle>
+                       </Style><Placemark>
+                           <name>213-AG-8</name>
+                           <styleUrl>#finTrayecto</styleUrl>
+                           <Point>
+                           <coordinates>-100.261,25.8898,150</coordinates>
+                           </Point>
+                           </Placemark><Placemark>
+                           <name>739-EN-1</name>
+                           <styleUrl>#finTrayecto</styleUrl>
+                           <Point>
+                           <coordinates>-103.892,18.9651,150</coordinates>
+                           </Point>
+                           </Placemark><Placemark>
+                           <name>500-EN-2</name>
+                           <styleUrl>#finTrayecto</styleUrl>
+                           <Point>
+                           <coordinates>-100.261,25.8896,150</coordinates>
+                           </Point>
+                           </Placemark><Placemark>
+                           <name>370-EN-3</name>
+                           <styleUrl>#finTrayecto</styleUrl>
+                           <Point>
+                           <coordinates>-98.2623,19.0809,150</coordinates>
+                           </Point>
+                           </Placemark><Placemark>
+                           <name>744-EW5</name>
+                           <styleUrl>#finTrayecto</styleUrl>
+                           <Point>
+                           <coordinates>-103.342,20.6369,150</coordinates>
+                           </Point>
+                           </Placemark><Placemark>
+                           <name>22AF8R</name>
+                           <styleUrl>#finTrayecto</styleUrl>
+                           <Point>
+                           <coordinates>-100.212,25.7588,150</coordinates>
+                           </Point>
+                           </Placemark><LookAt>
+                       <longitude>-100.261</longitude>
+                       <latitude>25.8898</latitude>
+                       <altitude>400</altitude>
+                       </LookAt></Document>
+                             </kml>

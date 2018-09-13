@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+                  <kml xmlns="http://earth.google.com/kml/2.2">
+                  <Document><name>Posicion del vehículo</name>
+                                <Style id="finTrayecto">
+                                  <IconStyle>
+                                    <Icon>
+                                      <href>http://maps.google.com/mapfiles/kml/pal3/icon52.png</href>
+                                    </Icon>
+                                  </IconStyle>
+                                </Style>
+                                <Placemark>
+                                  <name>749-AJ8</name>
+                                  <LookAt>
+                                    <longitude>-103.891</longitude>
+                                    <latitude>18.9623</latitude>
+                                    <altitude>150</altitude>
+                                  </LookAt>
+                                  <styleUrl>#finTrayecto</styleUrl>
+                                  <Point>
+                                    <altitudeMode>relativeToGround</altitudeMode>
+                                    <coordinates>-103.891,18.9623,50</coordinates>
+                                  </Point>
+                                </Placemark></Document>
+                             </kml>

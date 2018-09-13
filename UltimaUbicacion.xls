@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html id="default">
+
+
+
+
+
+
+<script>
+
+
+var timer = setInterval("cargar('#divtest', 'cargar2015.asp?mcve=RAPID27&mpas=2223222427&xtip=1&musr=RAPID&mnbe=dontr')",60000);
+
+function cargar(div, desde)
+{
+     $(div).load(desde);
+}
+
+
+</script>
+
+
+<head>
+<meta charset="utf-8" />
+
+
+
+
+
+
+
+<script type="text/javascript">
+<!--
+function ventanaNueva(){ 
+	window.open('nueva.html','nuevaVentana','width=300, height=400')
+}
+//-->
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+<script> 
+function abrir() { 
+open('mapems.asp','','top=300,left=300,width=300,height=300') ; 
+} 
+</script>
+
+<title>EMsat..Ubicacion de Unidades</title>
+
+<style type="text/css">
+
+div.menuBar,
+div.menuBar a.menuButton,
+div.menu,
+div.menu a.menuItem {
+  font-family: "MS Sans Serif", Arial, sans-serif;
+  font-size: 10pt;
+  font-style: normal;
+  font-weight: normal;
+  color: black;
+ 
+}
+
+div.menuBar {
+  background-color: transparent;
+  border: 0px solid;
+  border-color: transparent transparent transparent transparent;
+  padding: 4px 2px 4px 130px;
+  text-align: left;
+  top: 0px;
+}
+
+div.menuBar a.menuButton {
+  background-color: transparent;
+  border: 0px solid #08088A;
+  color: black;
+  cursor: default;
+  left: 0px;
+  margin: 1px;
+  padding: 2px 6px 2px 6px;
+  position: relative;
+  text-decoration: none;
+  top: 0px;
+  z-index: 100;
+}
+
+div.menuBar a.menuButton:hover {
+  background-color: transparent;
+  border-color: #f0f0f0 #909090 #909090 #f0f0f0;
+  color: white;
+}
+
+div.menuBar a.menuButtonActive,
+div.menuBar a.menuButtonActive:hover {
+  background-color: #2E2EFE;
+  border-color: #909090 #f0f0f0 #f0f0f0 #909090;
+  color: #ffffff;
+  left: 1px;
+  top: 1px;
+}
+
+div.menu {
+  background-color: #08088A;
+  border: 2px solid;
+  border-color: #f0f0f0 #909090 #909090 #f0f0f0;
+  left: 1px;
+  padding: 1px 1px 1px 0px;
+  position: absolute;
+  top: 0px;
+  visibility: hidden;
+  z-index: 101;
+}
+
+div.menu a.menuItem {
+  color: white;
+  cursor: default;
+  display: block;
+  padding: 3px 1em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+div.menu a.menuItem:hover, div.menu a.menuItemHighlight {
+  background-color: #2E2EFE;
+  color: #ffffff;
+}
+
+div.menu a.menuItem span.menuItemText {}
+
+div.menu a.menuItem span.menuItemArrow {
+  margin-right: -.75em;
+}
+
+div.menu div.menuItemSep {
+  border-top: 1px solid #909090;
+  border-bottom: 1px solid #f0f0f0;
+  margin: 4px 2px;
+}
+
+</style>
+
+<script type="text/javascript">
+
+function Browser() {
+  var ua, s, i;
+  this.isIE    = false;  
+  this.isNS    = false;  
+  this.version = null;
+
+  ua = navigator.userAgent;
+
+  s = "MSIE";
+  if ((i = ua.indexOf(s)) >= 0) {
+    this.isIE = true;
+    this.version = parseFloat(ua.substr(i + s.length));
+    return;
+  }
+
+  s = "Netscape6/";
+  if ((i = ua.indexOf(s)) >= 0) {
+    this.isNS = true;
+    this.version = parseFloat(ua.substr(i + s.length));
+    return;
+  }
+
+  // Treat any other "Gecko" browser as NS 6.1.
+
+  s = "Gecko";
+  if ((i = ua.indexOf(s)) >= 0) {
+    this.isNS = true;
+    this.version = 6.1;
+    return;
+  }
+}
+
+var browser = new Browser();
+
+//----------------------------------------------------------------------------
+// Code for handling the menu bar and active button.
+//----------------------------------------------------------------------------
+
+var activeButton = null;
+
+// Capture mouse clicks on the page so any active button can be
+// deactivated.
+
+if (browser.isIE)
+  document.onmousedown = pageMousedown;
+else
+  document.addEventListener("mousedown", pageMousedown, true);
+xt
+function pageMousedown(event) {
+  var el;
+  if (activeButton == null)
+    return;
+
+  if (browser.isIE)
+    el = window.event.srcElement;
+  else
+    el = (event.target.tagName ? event.target : event.target.parentNode);
+
+  if (el == activeButton)
+    return;
+
+  if (getContainerWith(el, "DIV", "menu") == null) {
+    resetButton(activeButton);
+    activeButton = null;
+  }
+}
+
+function buttonClick(event, menuId) {
+  var button;
+
+  if (browser.isIE)
+    button = window.event.srcElement;
+  else
+    button = event.currentTarget;
+
+  button.blur();
+
+  if (button.menu == null) {
+    button.menu = document.getElementById(menuId);
+    menuInit(button.menu);
+  }
+
+  if (activeButton != null)
+    resetButton(activeButton);
+
+  if (button != activeButton) {
+    depressButton(button);
+    activeButton = button;
+  }
+  else
+    activeButton = null;
+
+  return false;
+}
+
+function buttonMouseover(event, menuId) {
+  var button;
+
+  if (browser.isIE)
+    button = window.event.srcElement;
+  else
+    button = event.currentTarget;
+
+  if (activeButton != null && activeButton != button)
+    buttonClick(event, menuId);
+}
+
+function depressButton(button) {
+  var x, y;
+
+  button.className += " menuButtonActive";
+
+  x = getPageOffsetLeft(button);
+  y = getPageOffsetTop(button) + button.offsetHeight;
+
+  if (browser.isIE) {
+    x += button.offsetParent.clientLeft;
+    y += button.offsetParent.clientTop;
+  }
+
+  button.menu.style.left = x + "px";
+  button.menu.style.top  = y + "px";
+  button.menu.style.visibility = "visible";
+}
+
+function resetButton(button) {
+  removeClassName(button, "menuButtonActive");
+
+  if (button.menu != null) {
+    closeSubMenu(button.menu);
+    button.menu.style.visibility = "hidden";
+  }
+}
+
+
+function menuMouseover(event) {
+  var menu;
+  if (browser.isIE)
+    menu = getContainerWith(window.event.srcElement, "DIV", "menu");
+  else
+    menu = event.currentTarget;
+
+  if (menu.activeItem != null)
+    closeSubMenu(menu);
+}
+
+function menuItemMouseover(event, menuId) {
+  var item, menu, x, y;
+  if (browser.isIE)
+    item = getContainerWith(window.event.srcElement, "A", "menuItem");
+  else
+    item = event.currentTarget;
+  menu = getContainerWith(item, "DIV", "menu");
+
+  if (menu.activeItem != null)
+    closeSubMenu(menu);
+  menu.activeItem = item;
+
+  item.className += " menuItemHighlight";
+
+  if (item.subMenu == null) {
+    item.subMenu = document.getElementById(menuId);
+    menuInit(item.subMenu);
+  }
+
+  x = getPageOffsetLeft(item) + item.offsetWidth;
+  y = getPageOffsetTop(item);
+
+  var maxX, maxY;
+
+  if (browser.isNS) {
+    maxX = window.scrollX + window.innerWidth;
+    maxY = window.scrollY + window.innerHeight;
+  }
+  if (browser.isIE && browser.version < 6) {
+    maxX = document.body.scrollLeft + document.body.clientWidth;
+    maxY = document.body.scrollTop  + document.body.clientHeight;
+  }
+  if (browser.isIE && browser.version >= 6) {
+    maxX = document.documentElement.scrollLeft + document.documentElement.clientWidth;
+    maxY = document.documentElement.scrollTop  + document.documentElement.clientHeight;
+  }
+  maxX -= item.subMenu.offsetWidth;
+  maxY -= item.subMenu.offsetHeight;
+
+  if (x > maxX)
+    x = Math.max(0, x - item.offsetWidth - item.subMenu.offsetWidth
+      + (menu.offsetWidth - item.offsetWidth));
+  y = Math.max(0, Math.min(y, maxY));
+
+  item.subMenu.style.left = x + "px";
+  item.subMenu.style.top  = y + "px";
+  item.subMenu.style.visibility = "visible";
+
+  if (browser.isIE)
+    window.event.cancelBubble = true;
+  else
+    event.stopPropagation();
+}
+
+function closeSubMenu(menu) {
+  if (menu == null || menu.activeItem == null)
+    return;
+
+  if (menu.activeItem.subMenu != null) {
+    closeSubMenu(menu.activeItem.subMenu);
+    menu.activeItem.subMenu.style.visibility = "hidden";
+    menu.activeItem.subMenu = null;
+  }
+  removeClassName(menu.activeItem, "menuItemHighlight");
+  menu.activeItem = null;
+}
+
+function menuInit(menu) {
+  var itemList, spanList
+  var textEl, arrowEl;
+  var itemWidth;
+  var w, dw;
+  var i, j;
+
+  if (browser.isIE) {
+    menu.style.lineHeight = "2.5ex";
+    spanList = menu.getElementsByTagName("SPAN");
+    for (i = 0; i < spanList.length; i++)
+      if (hasClassName(spanList[i], "menuItemArrow")) {
+        spanList[i].style.fontFamily = "Webdings";
+        spanList[i].firstChild.nodeValue = "4";
+      }
+  }
+
+  itemList = menu.getElementsByTagName("A");
+  if (itemList.length > 0)
+    itemWidth = itemList[0].offsetWidth;
+  else
+    return;
+
+  for (i = 0; i < itemList.length; i++) {
+    spanList = itemList[i].getElementsByTagName("SPAN")
+    textEl  = null
+    arrowEl = null;
+    for (j = 0; j < spanList.length; j++) {
+      if (hasClassName(spanList[j], "menuItemText"))
+        textEl = spanList[j];
+      if (hasClassName(spanList[j], "menuItemArrow"))
+        arrowEl = spanList[j];
+    }
+    if (textEl != null && arrowEl != null)
+      textEl.style.paddingRight = (itemWidth 
+        - (textEl.offsetWidth + arrowEl.offsetWidth)) + "px";
+  }
+
+  if (browser.isIE) {
+    w = itemList[0].offsetWidth;
+    itemList[0].style.width = w + "px";
+    dw = itemList[0].offsetWidth - w;
+    w -= dw;
+    itemList[0].style.width = w + "px";
+  }
+}
+
+function getContainerWith(node, tagName, className) {
+  while (node != null) {
+    if (node.tagName != null && node.tagName == tagName &&
+        hasClassName(node, className))
+      return node;
+    node = node.parentNode;
+  }
+
+  return node;
+}
+
+function hasClassName(el, name) {
+  var i, list;
+  list = el.className.split(" ");
+  for (i = 0; i < list.length; i++)
+    if (list[i] == name)
+      return true;
+
+  return false;
+}
+
+function removeClassName(el, name) {
+  var i, curList, newList;
+  if (el.className == null)
+    return;
+  newList = new Array();
+  curList = el.className.split(" ");
+  for (i = 0; i < curList.length; i++)
+    if (curList[i] != name)
+      newList.push(curList[i]);
+  el.className = newList.join(" ");
+}
+
+function getPageOffsetLeft(el) {
+  var x;
+  x = el.offsetLeft;
+  if (el.offsetParent != null)
+    x += getPageOffsetLeft(el.offsetParent);
+
+  return x;
+}
+
+function getPageOffsetTop(el) {
+  var y;
+  y = el.offsetTop;
+  if (el.offsetParent != null)
+    y += getPageOffsetTop(el.offsetParent);
+
+  return y;
+}
+
+</script>
+
+
+
+	
+	<link rel="stylesheet" href="themes/default/default.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="themes/pascal/pascal.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="themes/orman/orman.css" type="text/css" media="screen" />
+    
+ 
+	
+
+
+    
+    
+   <style>
+* {	font-family:Verdana;	font-size:10pt;}
+table, td, th {	border: solid 1px silver; color:#000000; padding:3px 5px 3px 5px}
+th { background-color:#333; color:#fff; font-size:0.85em }
+a {	color:#000000; }
+.filtering { background-color:#000000}
+#jqtf_filters {
+	list-style:none;
+	
+	}
+#jqtf_filters li {
+	display:inline-block; 
+	position:relative; 
+	float:left;
+	margin-bottom:20px
+}
+
+
+
+
+
+
+.modalmask {
+	position: fixed;
+	font-family: Arial;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	opacity:0;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+	pointer-events: none;
+}
+.modalmask:target {
+	opacity:1;
+	pointer-events: auto;
+}
+.modalbox{
+	width: 400px;
+	position: relative;
+	padding: 5px 20px 13px 20px;
+	background: #fff;
+	border-radius:3px;
+	-webkit-transition: all 500ms ease-in;
+	-moz-transition: all 500ms ease-in;
+	transition: all 500ms ease-in;
+	
+}
+
+.movedown {
+	margin: 0 auto;
+}
+.rotate {
+	margin: 10% auto;
+	-webkit-transform: scale(-5,-5); 
+	transform: scale(-5,-5);
+}
+.resize {
+	margin: 10% auto;
+	width:0;
+	height:0;
+
+}
+.modalmask:target .movedown{		
+	margin:10% auto;
+}
+.modalmask:target .rotate{		
+	transform: rotate(360deg) scale(1,1);
+    -webkit-transform: rotate(360deg) scale(1,1);
+}
+
+.modalmask:target .resize{
+	width:400px;
+	height:200px;
+}
+
+
+
+.close {
+	background: #606061;
+	color: #FFFFFF;
+	line-height: 25px;
+	position: absolute;
+	right: 1px;
+	text-align: center;
+	top: 1px;
+	width: 24px;
+	text-decoration: none;
+	font-weight: bold;
+	border-radius:3px;
+	font-size:16px;
+}
+
+.close:hover { 
+	background: #FAAC58; 
+	color:#222;
+}
+
+ul{
+	width:500px;
+	margin:20% auto;
+	list-style:none;
+}
+ul li{
+
+	float:left;
+	margin-right:35px;
+
+}
+ul li a{
+	font-family: Arial;
+	font-size:16px;
+	text-decoration:none;
+	background:#222;
+	padding:20px;
+	color:#fff;
+	font-weight:bold;
+	border-radius:3px;
+	-webkit-transition: all 200ms ease-in;
+	-moz-transition: all 200ms ease-in;
+	transition: all 200ms ease-in;
+}
+ul li a:hover{
+	background:#FAAC58;
+	color:#222;
+
+}
+
+
+a:hover{
+
+	color:#DF7401;
+	
+}
+.nsc{
+	position:absolute;
+	bottom:40%;
+	right:0;
+}
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+ $(document).ready(function(){
+   $(".check_todos").click(function(event){
+     if($(this).is(":checked")) {
+	 	$(".ck:checkbox:not(:checked)").attr("checked", "checked");
+	 }else{
+		 $(".ck:checkbox:checked").removeAttr("checked");
+	 }
+   });
+ });
+</script>
+	<!-- End JQuery and Scripts-->
+</head>
+
+<body >
+	
+  
+	
+		<div id="header_bottom"><!-- BEGIN HEADER BOTTOM --></header>
+<!-- END HEADER -->
+	<section><!-- BEGIN SECTION MAIN CONTENT -->
+	 <div>
+
+
+
+
+
+
+
+	<h3><b>Ubicacion de Unidades: 1</b>
+
+
+
+<script languaje="Javascript"> 
+var fecha = new Date (); 
+var dia_semana = fecha.getDay(); 
+var dia_mes = fecha.getDate(); 
+var mes = fecha.getMonth (); 
+var anio = fecha.getYear(); 
+if ( anio < 1900 ) {
+anio = 1900 + fecha.getYear();
+}
+mes += 1;
+if (mes < 10) {
+mes = '0' + mes;
+}
+if (dia_mes < 10) {
+dia_mes = '0' + dia_mes;
+}
+if (dia_semana == 0) { dia_semana = 'Domingo '; }
+if (dia_semana == 1) { dia_semana = 'Lunes '; }
+if (dia_semana == 2) { dia_semana = 'Martes '; }
+if (dia_semana == 3) { dia_semana = 'Miercoles '; }
+if (dia_semana == 4) { dia_semana = 'Jueves '; }
+if (dia_semana == 5) { dia_semana = 'Viernes '; }
+if (dia_semana == 6) { dia_semana = 'Sabado '; }
+var nb_mes = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+document.write ( dia_semana+ ' ' + dia_mes + ' de ' + nb_mes[mes-1] + ' de ' + anio); 
+</script>
+
+
+
+
+</h3>
+					
+					
+
+     
+         <hr/>
+     
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="divtest" >
+
+
+
+
+
+
+    <table align="center" style="width:100%">
+
+
+  
+
+
+
+
+	            <tr>
+
+<td width="85" bgcolor="blue" align="center"><a href="mapems2014.asp?mcve=RAPID27&musr=RAPID&mnbe=Rapid Transit 2" target="_blank" onClick="window.open(this.href, this.target, 'width=950,height=600,Location=NO'); return false;"><font color="WHITE">VER MAPA</font></a></td>
+<th width="118">Mensaje</th>
+<th width="120">Fecha</th>
+<th width="33">vel</th>
+<th width="405">localidad cercana</th>
+<th width="68">T. Paro</th>
+<th width="89">Opciones</th>
+</tr>
+	
+
+
+			
+				
+	  <tr>
+<td width="5%"><a href="#RAPID-001">RAPID-001</a></td>
+
+
+
+					   
+
+
+
+
+<td width="113"><IMG SRC="http:\\www.emsat.com.mx\emsat2\estatus/msgnew.GIF" title="msgnew " WIDTH="30" HEIGHT="25">&nbsp;<BR>
+
+
+ 
+
+</td>
+
+
+<td width="115">02-08-2016&nbsp;13:05:02</td>
+
+<td width="32">54</td>
+<td width="395" title=""><a href="http:\\www.emsat.com.mx\emsat2\calles2.asp?guni=RAPID-001&glat=19.2967&glon=-99.4081" target="_blank" onClick="window.open(this.href, this.target, 'width=1100,height=500,Location=NO'); return false;">EN 15&nbsp; </a><br>0.612&nbsp;Kms de&nbsp;Cañada Honda; Ocoyoacac; MEXICO<br>230.64BLVD HEROES DE NACOZARI 544 CP 75731</td>
+
+<td width="65">0.10 D</td>  
+<td width="85">
+<a href="http:\\www.emsat.com.mx\emsat2\gooems.asp?muni=RAPID-001" target="_blank" onClick="window.open(this.href, this.target, 'width=1300,height=900,Location=NO'); return false;"><IMG SRC="http:\\www.emsat.com.mx\emsat2\estatus/gms.png" title="GoogleMaps" WIDTH="35" HEIGHT="15"></a>
+
+</td>
+
+
+
+
+    </tr>
+
+
+
+
+
+	  <tr>
+<td width="5%"><a href="#RAPID-002">RAPID-002</a></td>
+
+
+
+					   
+
+
+
+
+<td width="113"><IMG SRC="http:\\www.emsat.com.mx\emsat2\estatus/SIN MOVIMIENTO.GIF" title="SIN MOVIMIENTO " WIDTH="30" HEIGHT="25">&nbsp;SIN MOVIMIENTO<BR>
+
+
+ 
+
+</td>
+
+
+<td width="115">02-08-2016&nbsp;12:55:25</td>
+
+<td width="32">0</td>
+<td width="395" title=""><a href="http:\\www.emsat.com.mx\emsat2\calles2.asp?guni=RAPID-002&glat=19.0839&glon=-98.2643" target="_blank" onClick="window.open(this.href, this.target, 'width=1100,height=500,Location=NO'); return false;">EN FUENTES DEL MOLINO&nbsp; </a><br>0.886&nbsp;Kms de&nbsp;San Juan Cuautlancingo; Cuautlancingo; PUEBLA<br>113.81BLVD HEROES DE NACOZARI 544 CP 75731</td>
+
+<td width="65">0.29 P</td>  
+<td width="85">
+<a href="http:\\www.emsat.com.mx\emsat2\gooems.asp?muni=RAPID-002" target="_blank" onClick="window.open(this.href, this.target, 'width=1300,height=900,Location=NO'); return false;"><IMG SRC="http:\\www.emsat.com.mx\emsat2\estatus/gms.png" title="GoogleMaps" WIDTH="35" HEIGHT="15"></a>
+
+</td>
+
+
+
+
+    </tr>
+
+
+
+
+
+	  <tr>
+<td width="5%"><a href="#RAPID-003">RAPID-003</a></td>
+
+
+
+					   
+
+
+
+
+<td width="113"><IMG SRC="http:\\www.emsat.com.mx\emsat2\estatus/msgnew.GIF" title="msgnew " WIDTH="30" HEIGHT="25">&nbsp;<BR>
+
+
+ 
+
+</td>
+
+
+<td width="115">02-08-2016&nbsp;13:05:27</td>
+
+<td width="32">47</td>
+<td width="395" title=""><a href="http:\\www.emsat.com.mx\emsat2\calles2.asp?guni=RAPID-003&glat=19.3594&glon=-99.0282" target="_blank" onClick="window.open(this.href, this.target, 'width=1100,height=500,Location=NO'); return false;">EN DE LAS TORRES EJE 6 SUR&nbsp; </a><br>0.805&nbsp;Kms de&nbsp;El Tetecon [El Solitario]; Tlalpan; DISTRITO FEDERAL<br>197.96BLVD HEROES DE NACOZARI 544 CP 75731</td>
+
+<td width="65">0.09 D</td>  
+<td width="85">
+<a href="http:\\www.emsat.com.mx\emsat2\gooems.asp?muni=RAPID-003" target="_blank" onClick="window.open(this.href, this.target, 'width=1300,height=900,Location=NO'); return false;"><IMG SRC="http:\\www.emsat.com.mx\emsat2\estatus/gms.png" title="GoogleMaps" WIDTH="35" HEIGHT="15"></a>
+
+</td>
+
+
+
+
+    </tr>
+
+
+
+
+
+	  <tr>
+<td width="5%"><a href="#RAPID-004">RAPID-004</a></td>
+
+
+
+					   
+
+
+
+
+<td width="113"><IMG SRC="http:\\www.emsat.com.mx\emsat2\estatus/SIN MOVIMIENTO.GIF" title="SIN MOVIMIENTO " WIDTH="30" HEIGHT="25">&nbsp;SIN MOVIMIENTO<BR>
+
+
+ 
+
+</td>
+
+
+<td width="115">02-08-2016&nbsp;11:22:20</td>
+
+<td width="32">0</td>
+<td width="395" title=""><a href="http:\\www.emsat.com.mx\emsat2\calles2.asp?guni=RAPID-004&glat=19.4198&glon=-99.0926" target="_blank" onClick="window.open(this.href, this.target, 'width=1100,height=500,Location=NO'); return false;">EN ASISTENCIA PÚBLICA&nbsp; </a><br>2.369&nbsp;Kms de&nbsp;Venustiano Carranza; DISTRITO FEDERAL<br>207.17BLVD HEROES DE NACOZARI 544 CP 75731</td>
+
+<td width="65">12.47 P</td>  
+<td width="85">
+<a href="http:\\www.emsat.com.mx\emsat2\gooems.asp?muni=RAPID-004" target="_blank" onClick="window.open(this.href, this.target, 'width=1300,height=900,Location=NO'); return false;"><IMG SRC="http:\\www.emsat.com.mx\emsat2\estatus/gms.png" title="GoogleMaps" WIDTH="35" HEIGHT="15"></a>
+
+</td>
+
+
+
+
+    </tr>
+
+
+
+
+
+	  <tr>
+<td width="5%"><a href="#RAPID-005">RAPID-005</a></td>
+
+
+
+					   
+
+
+
+
+<td width="113"><IMG SRC="http:\\www.emsat.com.mx\emsat2\estatus/SIN MOVIMIENTO.GIF" title="SIN MOVIMIENTO " WIDTH="30" HEIGHT="25">&nbsp;SIN MOVIMIENTO<BR>
+
+
+ 
+
+</td>
+
+
+<td width="115">02-08-2016&nbsp;12:55:05</td>
+
+<td width="32">0</td>
+<td width="395" title=""><a href="http:\\www.emsat.com.mx\emsat2\calles2.asp?guni=RAPID-005&glat=19.3307&glon=-98.5888" target="_blank" onClick="window.open(this.href, this.target, 'width=1100,height=500,Location=NO'); return false;">EN 5 DE MAYO&nbsp; </a><br>0.104&nbsp;Kms de&nbsp;Santa Rita; Tlahuapan; PUEBLA<br>157.59BLVD HEROES DE NACOZARI 544 CP 75731</td>
+
+<td width="65">0.24 P</td>  
+<td width="85">
+<a href="http:\\www.emsat.com.mx\emsat2\gooems.asp?muni=RAPID-005" target="_blank" onClick="window.open(this.href, this.target, 'width=1300,height=900,Location=NO'); return false;"><IMG SRC="http:\\www.emsat.com.mx\emsat2\estatus/gms.png" title="GoogleMaps" WIDTH="35" HEIGHT="15"></a>
+
+</td>
+
+
+
+
+    </tr>
+
+
+
+
+
+	  <tr>
+<td width="5%"><a href="#RAPID-006">RAPID-006</a></td>
+
+
+
+					   
+
+
+
+
+<td width="113"><IMG SRC="http:\\www.emsat.com.mx\emsat2\estatus/msgnew.GIF" title="msgnew " WIDTH="30" HEIGHT="25">&nbsp;<BR>
+
+
+ 
+
+</td>
+
+
+<td width="115">02-08-2016&nbsp;13:04:27</td>
+
+<td width="32">0</td>
+<td width="395" title=""><a href="http:\\www.emsat.com.mx\emsat2\calles2.asp?guni=RAPID-006&glat=19.3258&glon=-98.833" target="_blank" onClick="window.open(this.href, this.target, 'width=1100,height=500,Location=NO'); return false;">EN 190&nbsp; </a><br>0.258&nbsp;Kms de&nbsp;El Treinta y Siete [Kilómetro 19]; Ixtapaluca; MEXICO<br>178.43BLVD HEROES DE NACOZARI 544 CP 75731</td>
+
+<td width="65">1.14 P</td>  
+<td width="85">
+<a href="http:\\www.emsat.com.mx\emsat2\gooems.asp?muni=RAPID-006" target="_blank" onClick="window.open(this.href, this.target, 'width=1300,height=900,Location=NO'); return false;"><IMG SRC="http:\\www.emsat.com.mx\emsat2\estatus/gms.png" title="GoogleMaps" WIDTH="35" HEIGHT="15"></a>
+
+</td>
+
+
+
+
+    </tr>
+
+
+
+
+
+
+        <tbody>
+        </tbody>
+    </table>	<br/>
+    <b>
+    
+
+	<hr/>
+
+
+
+
+ 
+
+
+</div>  
+
+       
+       
+
+</section><!-- END SECTION MAIN CONTENT -->
+
+
+
+<footer><!-- BEGIN FOOTER -->
+		<div class="container light">
+			
+			
+<div class="box copyright">
+				
+      <h6> Copyright &copy; 2015 v 2.26<br>
+      Derechos Reservados <br> EMsat..Enlaces Moviles Satelitales </h6>
+      
+</div>
+			
+			
+		</div>
+		
+	
+	</footer><!-- END FOOTER -->
+
+
+</body>
+</html>
+

@@ -2,3 +2,6 @@
 ._*
 .*.swp
 php/credentials
+php/session.php
+error_log
+UploadedFiles/

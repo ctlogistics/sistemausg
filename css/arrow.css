@@ -1,0 +1,47 @@
+.arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid black;
+}
+
+.arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+
+    border-top: 20px solid #f00;
+}
+
+.arrow-right {
+    width: 0;
+    height: 0;
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+    border-left: 30px solid blue;
+}
+.arrow-left {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right:10px solid blue;
+}
+.arrow-line {
+    width: 96%;
+    height: 0;
+    border-top: 7px solid blue;
+    border-bottom: 7px solid blue;
+    border-right:7px solid blue;
+    margin:23px 0;
+}
+.arrow-line2 {
+    width: 0;
+    height: 95%;
+    border-top: 7px solid blue;
+    border-bottom: 7px solid blue;
+    border-right:7px solid blue;
+    margin:23px 0;
+}

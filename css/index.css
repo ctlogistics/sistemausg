@@ -1,0 +1,54 @@
+#fm{
+    margin:0;
+    padding:10px 30px;
+}
+.ftitle{
+    font-size:18px;
+    font-weight:bold;
+    padding:5px 0;
+    margin-bottom:10px;
+    border-bottom:1px solid #ccc;
+}
+.fitem{
+    margin-bottom:5px;
+}
+.fitem label{
+    display:inline-block;
+    width:100px;
+    text-align: right;
+}
+.fitem input{
+    width:160px;
+}
+.graficasPanel{
+    width:33%;
+    height:300px;
+    padding:10px;
+}
+.labelGraficas{
+    width:40px;
+    text-align: right;
+
+
+}
+.labelGraficas1{
+    width: 30px;
+    text-align: left;
+
+}
+
+.infoGraficas{
+    width:80px;
+    display: inline-block
+}
+
+.divReportes{
+    width:170px;
+    padding: 10px;
+    display: inline-block;
+}
+
+.divReportes input{
+    width:110px
+}
+
